@@ -1,22 +1,24 @@
-import { Injectable, Inject } from '@nestjs/common';
-import {ConnectService} from './connect.service';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, getMongoManager  } from 'typeorm';
+import {generateId} from '../../lib/utils';
+import {User} from '../../entity/user.entity';
 
 @Injectable()
 export class TestService {
-  // @Inject('CONNECT') connect: ConnectService
   constructor(
-    @Inject('CONNECT') private connect: ConnectService
+    @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
-  onModuleInit() {
-    console.log(`test server init`);
-  }
 
-  a = 0;
-  getTest(): string {
-    return 'this is a test!' + this.a++;
-  }
-  getConnect(): string {
-    return this.connect.getData();
+  async getUser() {
+    // const manager = getMongoManager();
+    // const user = new User();
+    // user.username = 'admin1';
+    // const id = generateId();
+    // user.id = id;
+    // await manager.save(user);
+    const users = await this.userRepository.findOne({username: 'admin1'});
+    console.log(JSON.stringify(users));
   }
 }

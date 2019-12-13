@@ -1,26 +1,17 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TestController } from './test.controller';
 import { TestService } from './test.service';
-import { ConnectService } from './connect.service';
+import {User} from '../../entity/user.entity';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forFeature([User])
+  ],
   controllers: [TestController],
   providers: [
-    {
-      provide: TestService,
-      useClass: TestService,
-    },
-    {
-      provide: 'CONNECT',
-      useValue: new ConnectService()
-    },
+    TestService
   ],
-  exports: [TestService],
+  exports: [],
 })
-export class TestModule {
-
-  onModuleInit() {
-    console.log(`test module init`);
-  }
-}
+export class TestModule {}

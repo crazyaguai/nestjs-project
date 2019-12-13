@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
-import {HellowModule} from './module/hellow/hellow.module'
+import {config} from './module/config/config.service';
+
+import {ConfigModule} from './module/config/config.module';
 import {TestModule} from './module/test/test.module';
-import {ConfigModule} from './module/config/config.module'
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [HellowModule,TestModule,ConfigModule.register()]
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forRoot(config.mongo),
+    TestModule,
+  ]
 })
 export class MainModule {
 }
